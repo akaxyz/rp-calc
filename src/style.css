@@ -26,6 +26,8 @@
     flex-direction: column;
     align-items: center;
     font-size: 11px;
+    position: relative;
+    width: 280px;
 }
 
 .itemDropdown {
@@ -40,18 +42,19 @@
     padding: 2px 6px;
     background: #222;
     cursor: pointer;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .options {
-    display: none;
-    position: absolute;
-    top: 100%;
-    left: 0;
-    background: #222;
-    border: 1px solid #888;
-    max-height: 200px;
-    overflow-y: auto;
-    z-index: 100;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 2px 6px;
+    font-size: 12px;
+    white-space: nowrap;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .options.show {
