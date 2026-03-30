@@ -16,36 +16,32 @@ function addStation() {
 }
 
 function renderStations() {
-    let div = document.getElementById("stations");
-    div.innerHTML = "";
+    const container = document.getElementById("stations");
+    container.innerHTML = "";
 
     stations.forEach((s, i) => {
-        let html = `<div class="station">`;
-        html += `Tier:
-        <select onchange="stations[${i}].tier=this.value; renderStations(); recalcAll();">
-            <option>"1"</option>
-            <option>"2"</option>
-            <option>"3"</option>
-            <option>"4"</option>
-            <option>"SDC"</option>
-        </select>`;
-    
-        if (s.tier != "1") {
-            html += `Item 1: <select>...</select>`;
-        }
-    
-        if (s.tier == "3" || s.tier == "4") {
-            html += `Item 2: <select>...</select>`;
-        }
-    
-        if (s.tier == "4") {
-            html += `Circuit: <input type="checkbox">`;
-        }
-    
-        html += `</div>`;
-    });
+        const template = document.getElementById("station-template");
+        const stationEl = template.content.cloneNode(true);
+        
+        const tierSelect = stationEl.querySelector(".tier");
+        ["1","2","3","4","SDC"].forEach(t => {
+            const opt = document.createElement("option");
+            opt.value = t;
+            opt.textContent = t;
+            if (t === s.tier) opt.selected = true;
+            tierSelect.appendChild(opt);
+        });
+        tierSelect.addEventListener("change", () => {
+            s.tier = tierSelect.value;
+            adjustItemsForTier(s);
+            renderStations();
+            recalcAll();
+        });
 
-    recalc();
+        // items and circuit handled similarly using querySelector and appendChild
+
+        container.appendChild(stationEl);
+    });
 }
 
 function recalc() {
