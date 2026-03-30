@@ -22,6 +22,8 @@ function renderStations() {
     stations.forEach((s, i) => {
         const template = document.getElementById("station-template");
         const stationEl = template.content.cloneNode(true);
+
+        /* TIER */
         
         const tierSelect = stationEl.querySelector(".tier");
         ["1","2","3","4","SDC"].forEach(t => {
@@ -38,9 +40,48 @@ function renderStations() {
             recalcAll();
         });
 
+        /* ITEMS */
+        
+        const itemsContainer = stationEl.querySelector(".items");
+        itemsContainer.innerHTML = ""; // clear old options
+        
+        s.items.forEach((itemValue, idx) => {
+            const itemLabel = document.createElement("label");
+            itemLabel.textContent = `Item ${idx+1}: `;
+        
+            const itemSelect = document.createElement("select");
+        
+            // sort dynamically
+            const sortedItems = Object.values(items).sort((a,b) => a.rp - b.rp); // example sort by rp
+        
+            sortedItems.forEach(it => {
+                const opt = document.createElement("option");
+                opt.value = it.name;
+                opt.textContent = it.name;
+                if (it.name === itemValue) opt.selected = true;
+        
+                // optional: add icon inside option (some browsers support emoji or unicode, images usually need custom UI)
+                opt.dataset.icon = it.icon;
+        
+                itemSelect.appendChild(opt);
+            });
+        
+            itemSelect.addEventListener("change", () => {
+                s.items[idx] = itemSelect.value;
+                recalcAll();
+            });
+        
+            itemLabel.appendChild(itemSelect);
+            itemsContainer.appendChild(itemLabel);
+        });
+
+
+        
         const circuitLabel = stationEl.querySelector(".circuit");
         circuitLabel.style.display = (s.tier === "4") ? "inline-block" : "none";
 
+
+        
         container.appendChild(stationEl);
     });
 }
