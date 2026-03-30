@@ -119,7 +119,15 @@ function renderStations() {
         
             itemsContainer.appendChild(dropdown);
         });
-                
+
+        document.addEventListener("click", (e) => {
+            document.querySelectorAll(".options").forEach(opt => {
+                if (!opt.parentElement.contains(e.target)) {
+                    opt.classList.remove("show");
+                }
+            });
+        });
+                        
         /* CIRCUIT */
         const circuitDiv = stationEl.querySelector(".circuit");
         const circuitInput = stationEl.querySelector(".circuitDelay");
