@@ -81,24 +81,26 @@ function renderStations() {
             options.className = "options";
             dropdown.appendChild(options);
         
-            Object.entries(items).forEach(([name, data]) => {
-                const opt = document.createElement("div");
-                opt.className = "option";
-            
-                const img = document.createElement("img");
-                img.src = data.icon;
-                img.className = "icon";
-            
-                const text = document.createElement("span");
-                text.textContent = `${name} (RP:${data.rp} $${data.money})`;
-            
-                opt.appendChild(img);
-                opt.appendChild(text);
-            
-                opt.addEventListener("click", () => {
-                    s.items[idx] = name;
-                    renderStations();
-                    recalcAll();
+            Object.entries(items)
+                .sort((a, b) => a[1].rp - b[1].rp)
+                .forEach(([name, data]) => {
+                    const opt = document.createElement("div");
+                    opt.className = "option";
+                
+                    const img = document.createElement("img");
+                    img.src = data.icon;
+                    img.className = "icon";
+                
+                    const text = document.createElement("span");
+                    text.textContent = `${name} (RP:${data.rp} $${data.money})`;
+                
+                    opt.appendChild(img);
+                    opt.appendChild(text);
+                
+                    opt.addEventListener("click", () => {
+                        s.items[idx] = name;
+                        renderStations();
+                        recalcAll();
                 });
             
                 options.appendChild(opt);
