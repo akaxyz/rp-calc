@@ -38,7 +38,8 @@ function renderStations() {
             recalcAll();
         });
 
-        // items and circuit handled similarly using querySelector and appendChild
+        const circuitLabel = stationEl.querySelector(".circuit");
+        circuitLabel.style.display = (s.tier === "4") ? "inline-block" : "none";
 
         container.appendChild(stationEl);
     });
