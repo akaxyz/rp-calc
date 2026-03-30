@@ -16,22 +16,25 @@
     
     <template id="station-template">
       <div class="station">
+        
+          <button class="remove">Remove</button>
+        
           <input class="count" type="number">
-      
+        
           <select class="tier"></select>
-      
+        
           <div class="items"></div>
-      
+        
           <div class="circuit">
               circuit delay:
               <input class="circuitDelay" type="number">
           </div>
-      
-          <button class="remove">Remove</button>
+        
       </div>
     </template>
-        
-    <button onclick="addStation()">Add Research Station</button>
+    
+    <button id="addStationBtn" onclick="addStation()">Add Station</button>
+    <button id="sortItemsBtn">Sort Items</button>
     
     <div id="stationContainer">
         <div id="stations"></div>
