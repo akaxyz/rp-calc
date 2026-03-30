@@ -70,6 +70,10 @@ function renderStations() {
         
         s.items.forEach((itemValue, idx) => {
         
+            const label = document.createElement("div");
+            label.textContent = "Item " + (idx + 1);
+            itemsContainer.appendChild(label);
+        
             const dropdown = document.createElement("div");
             dropdown.className = "itemDropdown";
             
@@ -101,10 +105,10 @@ function renderStations() {
                         s.items[idx] = name;
                         renderStations();
                         recalcAll();
+                    });
+                
+                    options.appendChild(opt);
                 });
-            
-                options.appendChild(opt);
-            });
         
             if (itemValue && items[itemValue]) {
                 selected.innerHTML = `
