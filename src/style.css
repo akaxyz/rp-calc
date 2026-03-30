@@ -59,8 +59,12 @@
 }
 
 .option {
+    display: flex;
+    align-items: center;
+    gap: 6px;
     padding: 2px 6px;
-    cursor: pointer;
+    font-size: 12px;
+    white-space: nowrap;
 }
 
 .option:hover {
@@ -83,4 +87,11 @@
 
 .circuitDelay {
     width: 70px;
+}
+
+.icon {
+    width: 16px;
+    height: 16px;
+    object-fit: contain;
+    margin-right: 4px;
 }
