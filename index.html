@@ -11,7 +11,15 @@
   <body>
 
     <h1>RP Calculator</h1>
-
+    
+    <template id="station-template">
+      <div class="station">
+        <label>Tier: <select class="tier"></select></label>
+        <div class="items"></div>
+        <label class="circuit" style="display:none;">Circuit: <input type="checkbox"></label>
+      </div>
+    </template>
+    
     <button onclick="addStation()">Add Research Station</button>
 
     <div id="stations"></div>
