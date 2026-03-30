@@ -84,78 +84,78 @@ function renderStations() {
         // ITEMS
         const itemsContainer = stationEl.querySelector(".items");
         itemsContainer.innerHTML = "";
-
+        
         s.items.forEach((itemValue, idx) => {
-            const opt = document.createElement("div");
-            opt.className = "option";
-            
-            const left = document.createElement("div");
-            left.className = "optionLeft";
-            
-            const img = document.createElement("img");
-            img.src = data.icon;
-            img.className = "icon";
-            
-            const name = document.createElement("span");
-            name.textContent = name;
-            
-            left.appendChild(img);
-            left.appendChild(name);
-            
-            const right = document.createElement("div");
-            right.className = "optionRight";
-            
-            const rp = document.createElement("span");
-            rp.className = "rp";
-            rp.textContent = data.rp;
-            
-            const money = document.createElement("span");
-            money.className = "money";
-            money.textContent = "$" + data.money;
-            
-            right.appendChild(rp);
-            right.appendChild(money);
-            
-            opt.appendChild(left);
-            opt.appendChild(right);
-            
+            const dropdown = document.createElement("div");
+            dropdown.className = "itemDropdown";
+        
+            // label above dropdown
+            const label = document.createElement("label");
+            label.textContent = "Item " + (idx + 1);
+            dropdown.appendChild(label);
+        
+            // selected div
+            const selectedDiv = document.createElement("div");
+            selectedDiv.className = "selected";
+            dropdown.appendChild(selectedDiv);
+        
+            // options container
+            const optionsDiv = document.createElement("div");
+            optionsDiv.className = "options";
+            dropdown.appendChild(optionsDiv);
+        
+            // (None) option always at top
             const noneOpt = document.createElement("div");
             noneOpt.className = "option";
-            noneOpt.textContent = "(None)";
+            noneOpt.innerHTML = `<div class="optionLeft"><span class="name">(None)</span></div><div class="optionRight"></div>`;
             noneOpt.onclick = () => {
                 s.items[idx] = null;
                 renderStations();
                 recalcAll();
             };
             optionsDiv.appendChild(noneOpt);
-            
-            // populate options
+        
+            // populate items
             Object.entries(items)
                 .sort((a, b) => a[1].rp - b[1].rp)
-                .forEach(([name, data]) => {
+                .forEach(([itemName, data]) => {
                     const opt = document.createElement("div");
                     opt.className = "option";
-
+        
+                    const left = document.createElement("div");
+                    left.className = "optionLeft";
                     const img = document.createElement("img");
                     img.src = data.icon;
                     img.className = "icon";
-
-                    const text = document.createElement("span");
-                    text.textContent = `${name} (RP:${data.rp} $${data.money})`;
-
-                    opt.appendChild(img);
-                    opt.appendChild(text);
-
+                    const name = document.createElement("span");
+                    name.textContent = itemName;
+                    left.appendChild(img);
+                    left.appendChild(name);
+        
+                    const right = document.createElement("div");
+                    right.className = "optionRight";
+                    const rp = document.createElement("span");
+                    rp.className = "rp";
+                    rp.textContent = data.rp;
+                    const money = document.createElement("span");
+                    money.className = "money";
+                    money.textContent = "$" + data.money;
+                    right.appendChild(rp);
+                    right.appendChild(money);
+        
+                    opt.appendChild(left);
+                    opt.appendChild(right);
+        
                     opt.onclick = () => {
-                        s.items[idx] = name;
+                        s.items[idx] = itemName;
                         renderStations();
                         recalcAll();
                     };
-
+        
                     optionsDiv.appendChild(opt);
                 });
-
-            // show selected
+        
+            // show selected item
             if (itemValue && items[itemValue]) {
                 selectedDiv.innerHTML = `
                     <img src="${items[itemValue].icon}" class="icon">
@@ -164,13 +164,23 @@ function renderStations() {
             } else {
                 selectedDiv.textContent = "(None)";
             }
-
+        
+            // toggle options
             selectedDiv.onclick = (e) => {
-                e.stopPropagation(); // prevent document click from closing immediately
+                e.stopPropagation();
                 optionsDiv.classList.toggle("show");
             };
-
+        
             itemsContainer.appendChild(dropdown);
+        });
+        
+        // close dropdown if clicked outside
+        document.addEventListener("click", (e) => {
+            document.querySelectorAll(".options").forEach(opt => {
+                if (!opt.parentElement.contains(e.target)) {
+                    opt.classList.remove("show");
+                }
+            });
         });
 
         // CIRCUIT
