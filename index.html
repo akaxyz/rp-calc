@@ -16,25 +16,21 @@
     
     <template id="station-template">
       <div class="station">
-        
-          <button class="remove">x</button>
-        
-          <input class="count" type="number">
-        
-          <select class="tier"></select>
-        
-          <div class="items"></div>
-        
-          <div class="circuit">
-              circuit delay:
-              <input class="circuitDelay" type="number">
-          </div>
-        
+        <button class="remove">x</button>
+        <input class="count" type="number" min="1">
+        <select class="tier"></select>
+        <div class="items"></div>
+        <div class="circuit">
+          Circuit Delay:
+          <input class="circuitDelay" type="number" min="0">
+        </div>
       </div>
     </template>
     
-    <button id="addStationBtn" onclick="addStation()">Add Station</button>
-    <button id="sortItemsBtn">Sort Items</button>
+    <div class="controls">
+      <button onclick="addStation()" id="addStationBtn">Add Research Station</button>
+      <button onclick="sortDropdowns()">Sort Items</button>
+    </div>
     
     <div id="stationContainer">
         <div id="stations"></div>
