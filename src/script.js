@@ -45,7 +45,7 @@ function renderStations() {
                 opt.classList.remove("show");
             }
         });
-    };
+    }
 
     stations.forEach((s) => {
         adjustItemsForTier(s);
@@ -59,7 +59,11 @@ function renderStations() {
         ["1","2","3","4","SDC"].forEach(t => {
             const opt = document.createElement("option");
             opt.value = t;
-            opt.textContent = t;
+            if (t === "SDC") {
+                opt.textContent = "SDC";
+            } else {
+                opt.textContent = "Tier " + t;
+            }
             if (t === s.tier) opt.selected = true;
             tierSelect.appendChild(opt);
         });
@@ -162,7 +166,7 @@ function renderStations() {
             stations = stations.filter(st => st.id !== s.id);
             renderStations();
             recalcAll();
-        };
+        }
 
         container.appendChild(stationEl);
     });
