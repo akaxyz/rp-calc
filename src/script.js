@@ -1,6 +1,10 @@
 let stations = [];
 
 function addStation() {
+    alert("JS is connected");
+}
+
+function addStation() {
     stations.push({
         tier: 1,
         count: 1
