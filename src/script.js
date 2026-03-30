@@ -86,12 +86,12 @@ function renderStations() {
         itemsContainer.innerHTML = "";
 
         s.items.forEach((itemValue, idx) => {
+            const dropdown = document.createElement("div");
+            dropdown.className = "itemDropdown";
+            
             const label = document.createElement("label");
             label.textContent = "Item " + (idx + 1);
             dropdown.appendChild(label);
-
-            const dropdown = document.createElement("div");
-            dropdown.className = "itemDropdown";
 
             const selectedDiv = document.createElement("div");
             selectedDiv.className = "selected";
