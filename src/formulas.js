@@ -40,7 +40,7 @@ function calcSDCMultiplier(sdcStations) {
     sdcStations.forEach(s => {
         n += s.count * getStationItemRPSum(s);
     });
-    return 1 + 0.78 * log(n + 1, 2);
+    return 1 + 0.78 * Math.log(n + 1);
 }
 
 // Satellite dish efficiency: 1 / (s + sqrt(n * s))
