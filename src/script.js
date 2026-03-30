@@ -7,24 +7,37 @@ function addStation() {
         tier: "1",
         count: 1,
         items: [],
-        circuitDelay: 4,
-        cap: 0,
-        rps: 0
+        circuitDelay: 0
     });
 
     renderStations();
+    recalcAll();
+}
+
+function adjustItemsForTier(s) {
+    if (s.tier === "1") {
+        s.items = [];
+    } else if (s.tier === "2" || s.tier === "SDC") {
+        s.items = [s.items[0] || null];
+    } else if (s.tier === "3" || s.tier === "4") {
+        s.items = [
+            s.items[0] || null,
+            s.items[1] || null
+        ];
+    }
 }
 
 function renderStations() {
     const container = document.getElementById("stations");
     container.innerHTML = "";
 
-    stations.forEach((s, i) => {
+    stations.forEach((s) => {
+        adjustItemsForTier(s);
+
         const template = document.getElementById("station-template");
         const stationEl = template.content.cloneNode(true);
 
         /* TIER */
-        
         const tierSelect = stationEl.querySelector(".tier");
         ["1","2","3","4","SDC"].forEach(t => {
             const opt = document.createElement("option");
@@ -33,100 +46,89 @@ function renderStations() {
             if (t === s.tier) opt.selected = true;
             tierSelect.appendChild(opt);
         });
+
         tierSelect.addEventListener("change", () => {
             s.tier = tierSelect.value;
-            adjustItemsForTier(s);
             renderStations();
             recalcAll();
         });
 
         /* COUNT */
-
-        const countInput = document.createElement("input");
-        countInput.type = "number";
+        const countInput = stationEl.querySelector(".count");
         countInput.value = s.count;
-            
+
         countInput.addEventListener("input", () => {
             s.count = Number(countInput.value);
             recalcAll();
         });
 
         /* ITEMS */
-        
         const itemsContainer = stationEl.querySelector(".items");
-        itemsContainer.innerHTML = ""; // clear old options
-        
+        itemsContainer.innerHTML = "";
+
         s.items.forEach((itemValue, idx) => {
-            const itemLabel = document.createElement("label");
-            itemLabel.textContent = `Item ${idx+1}: `;
-        
-            const itemSelect = document.createElement("select");
-        
-            // sort dynamically
-            const sortedItems = Object.values(items).sort((a,b) => a.rp - b.rp); // example sort by rp
-        
+            const label = document.createElement("label");
+            label.textContent = `Item ${idx + 1}: `;
+
+            const select = document.createElement("select");
+
+            const sortedItems = Object.entries(items)
+                .map(([name, data]) => ({ name, ...data }))
+                .sort((a, b) => a.rp - b.rp); // change sorting if you want
+
             sortedItems.forEach(it => {
                 const opt = document.createElement("option");
                 opt.value = it.name;
-                opt.textContent = it.name;
+                opt.textContent = `${it.name} (RP:${it.rp} $${it.money})`;
                 if (it.name === itemValue) opt.selected = true;
-        
-                // optional: add icon inside option (some browsers support emoji or unicode, images usually need custom UI)
-                opt.dataset.icon = it.icon;
-        
-                itemSelect.appendChild(opt);
+                select.appendChild(opt);
             });
-        
-            itemSelect.addEventListener("change", () => {
-                s.items[idx] = itemSelect.value;
+
+            select.addEventListener("change", () => {
+                s.items[idx] = select.value;
                 recalcAll();
             });
-        
-            itemLabel.appendChild(itemSelect);
-            itemsContainer.appendChild(itemLabel);
+
+            label.appendChild(select);
+            itemsContainer.appendChild(label);
         });
 
+        /* CIRCUIT */
+        const circuitDiv = stationEl.querySelector(".circuit");
+        const circuitInput = stationEl.querySelector(".circuitDelay");
 
-
-        // item 1 for everything except tier 1
-        if (s.tier !== "1") {
-            createItemSelect(container, s, 0);
-        }
-        
-        // item 2 only for tier 3 and 4
-        if (s.tier === "3" || s.tier === "4") {
-            createItemSelect(container, s, 1);
-        }
-        
-        // circuit delay only for tier 4
         if (s.tier === "4") {
-            const input = document.createElement("input");
-            input.type = "number";
-            input.value = s.circuitDelay || 0;
-        
-            input.addEventListener("input", () => {
-                s.circuitDelay = Number(input.value);
+            circuitDiv.style.display = "block";
+            circuitInput.value = s.circuitDelay;
+
+            circuitInput.addEventListener("input", () => {
+                s.circuitDelay = Number(circuitInput.value);
                 recalcAll();
             });
-        
-            container.appendChild(input);
+        } else {
+            circuitDiv.style.display = "none";
         }
 
-        
-        const circuitLabel = stationEl.querySelector(".circuit");
-        circuitLabel.style.display = (s.tier === "4") ? "inline-block" : "none";
+        /* REMOVE BUTTON */
+        const removeBtn = stationEl.querySelector(".remove");
+        removeBtn.addEventListener("click", () => {
+            stations = stations.filter(st => st.id !== s.id);
+            renderStations();
+            recalcAll();
+        });
 
-
-        
         container.appendChild(stationEl);
     });
 }
 
-function recalc() {
+function recalcAll() {
+    // placeholder
     let total = 0;
-    for (let s of stations) {
-        total += s.count * s.tier;
-    }
+
+    stations.forEach(s => {
+        total += s.count;
+    });
+
     document.getElementById("totals").innerText =
-        "RP/s: " + total;
+        "Stations: " + total;
 }
