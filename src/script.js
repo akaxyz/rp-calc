@@ -65,36 +65,53 @@ function renderStations() {
         });
 
         /* ITEMS */
-        const itemsContainer = stationEl.querySelector(".items");
-        itemsContainer.innerHTML = "";
+        const dropdown = document.createElement("div");
+        dropdown.className = "itemDropdown";
+        
+        const selected = document.createElement("div");
+        selected.className = "selected";
+        dropdown.appendChild(selected);
+        
+        const options = document.createElement("div");
+        options.className = "options";
+        dropdown.appendChild(options);
 
-        s.items.forEach((itemValue, idx) => {
-            const label = document.createElement("label");
-            label.textContent = `Item ${idx + 1}: `;
-
-            const select = document.createElement("select");
-
-            const sortedItems = Object.entries(items)
-                .map(([name, data]) => ({ name, ...data }))
-                .sort((a, b) => a.rp - b.rp); // change sorting if you want
-
-            sortedItems.forEach(it => {
-                const opt = document.createElement("option");
-                opt.value = it.name;
-                opt.textContent = `${it.name} (RP:${it.rp} $${it.money})`;
-                if (it.name === itemValue) opt.selected = true;
-                select.appendChild(opt);
-            });
-
-            select.addEventListener("change", () => {
-                s.items[idx] = select.value;
+        Object.entries(items).forEach(([name, data]) => {
+            const opt = document.createElement("div");
+            opt.className = "option";
+        
+            const img = document.createElement("img");
+            img.src = data.icon;
+            img.className = "icon";
+        
+            const text = document.createElement("span");
+            text.textContent = `${name} (RP:${data.rp} $${data.money})`;
+        
+            opt.appendChild(img);
+            opt.appendChild(text);
+        
+            opt.addEventListener("click", () => {
+                s.items[idx] = name;
+                renderStations();
                 recalcAll();
             });
-
-            label.appendChild(select);
-            itemsContainer.appendChild(label);
+        
+            options.appendChild(opt);
         });
 
+        if (itemValue && items[itemValue]) {
+            selected.innerHTML = `
+                <img src="${items[itemValue].icon}" class="icon">
+                ${itemValue} (RP:${items[itemValue].rp} $${items[itemValue].money})
+            `;
+        } else {
+            selected.textContent = "Select item";
+        }
+
+        selected.addEventListener("click", () => {
+            options.classList.toggle("show");
+        });
+                
         /* CIRCUIT */
         const circuitDiv = stationEl.querySelector(".circuit");
         const circuitInput = stationEl.querySelector(".circuitDelay");
