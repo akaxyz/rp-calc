@@ -15,6 +15,16 @@ body {
     gap: 8px;
 }
 
+.station input,
+.station select {
+    height: 24px;
+}
+
+.circuit {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
 .itemDropdown {
     display: flex;
     flex-direction: column;
