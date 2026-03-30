@@ -4,16 +4,27 @@
     gap: 6px;
 }
 
+#stationContainer {
+    border: 1px solid #666;
+    padding: 8px;
+    height: 300px;
+    overflow-y: auto;
+    background: #111;
+}
+
+.station {
+    border: 1px solid #444;
+    padding: 6px;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
 .station {
     display: flex;
     align-items: center;
-    gap: 12px;
-    flex-wrap: nowrap;
-}
-
-.station > * {
-    display: flex;
-    align-items: center;
+    gap: 10px;
 }
 
 .items {
@@ -23,20 +34,23 @@
 
 .itemDropdown {
     position: relative;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    font-size: 11px;
-    width: 300px;
+    width: 280px;
 }
 
+.itemDropdown label {
+    position: absolute;
+    top: -12px;
+    left: 4px;
+    font-size: 10px;
+    color: #888;
+}
+
+input,
+select,
 .selected {
-    border: 1px solid #888;
-    padding: 2px 6px;
-    background: #222;
-    cursor: pointer;
-    width: 100%;
+    height: 26px;
     box-sizing: border-box;
+    font-size: 13px;
 }
 
 .options {
@@ -64,6 +78,7 @@
     padding: 2px 6px;
     font-size: 12px;
     white-space: nowrap;
+    justify-content: space-between;
 }
 
 .option:hover {
@@ -76,12 +91,11 @@
     gap: 4px;
 }
 
-.count {
-    width: 60px;
-}
+.count { width: 60px; }
+.tier  { width: 90px; }
 
-.tier {
-    width: 80px;
+#addStationBtn {
+    width: 150px;
 }
 
 .circuitDelay {
@@ -93,4 +107,21 @@
     height: 16px;
     object-fit: contain;
     margin-right: 4px;
+}
+
+.rp {
+    color: #4da6ff;
+    margin-left: 8px;
+}
+
+.money {
+    color: #66cc66;
+    margin-left: 8px;
+}
+
+.remove {
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    font-size: 14px;
 }
