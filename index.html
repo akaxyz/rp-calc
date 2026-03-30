@@ -1,6 +1,94 @@
 <!DOCTYPE html>
 
 <html>
+
+  <head>
+    <title>RP Calculator</title>
+    <link rel="stylesheet" href="src/style.css">
+  </head>
+
+  <body>
+
+    <h1>[ RP Calculator ]</h1>
+
+    <template id="station-template">
+      <div class="station">
+        <div class="remove-col">
+          <button class="remove">×</button>
+        </div>
+        <div class="field-group">
+          <span class="field-label">Count</span>
+          <input class="count" type="number" min="1">
+        </div>
+        <div class="field-group">
+          <span class="field-label">Tier</span>
+          <select class="tier"></select>
+        </div>
+        <div class="items"></div>
+        <div class="circuit">
+          <span class="field-label">Circuit Delay</span>
+          <div class="circuit-inner">
+            <input class="circuitDelay" type="number" min="0">
+            <span class="circuit-unit">s</span>
+          </div>
+        </div>
+      </div>
+    </template>
+
+    <div class="controls">
+      <button class="btn primary" onclick="addStation()">+ Add Research Station</button>
+      <div class="sort-wrap">
+        <button class="sort-btn active" id="sortFieldBtn" onclick="toggleSortDropdown('sortDrop')">Sort: RP ▾</button>
+        <button class="sort-btn" id="sortDirBtn" onclick="toggleSortDropdown('dirDrop')">↑ ASC ▾</button>
+        <div class="sort-dropdown" id="sortDrop">
+          <div class="sort-opt selected" onclick="setSortField('rp', this)"><span class="check">✓</span>RP</div>
+          <div class="sort-opt" onclick="setSortField('money', this)"><span class="check"> </span>Money</div>
+          <div class="sort-opt" onclick="setSortField('name', this)"><span class="check"> </span>Name</div>
+        </div>
+        <div class="sort-dropdown dir-dropdown" id="dirDrop">
+          <div class="sort-opt selected" onclick="setSortDir('asc', this)"><span class="check">✓</span>Ascending</div>
+          <div class="sort-opt" onclick="setSortDir('desc', this)"><span class="check"> </span>Descending</div>
+        </div>
+      </div>
+    </div>
+
+    <div id="stationContainer">
+      <div id="stations"></div>
+    </div>
+
+    <div class="bottom-panel">
+      <div class="panel-box">
+        <div class="panel-box-title">RP Targets</div>
+        <div class="rp-fields">
+          <span class="rp-field-label">Current RP</span>
+          <input id="currentRP" type="number" value="0" min="0">
+          <span class="rp-field-label">Target RP</span>
+          <input id="targetRP" type="number" value="1000" min="0">
+        </div>
+        <div id="timeToTarget">Time to reach target: 0s</div>
+      </div>
+      <div class="panel-box">
+        <div class="panel-box-title">Tier Breakdown</div>
+        <div class="tier-header">
+          <span></span>
+          <span>RP/s</span>
+          <span>Cap</span>
+          <span>Bonus</span>
+        </div>
+        <div id="tierResults"></div>
+        <div id="totals"></div>
+      </div>
+    </div>
+
+    <script src="src/items.js"></script>
+    <script src="src/formulas.js"></script>
+    <script src="src/script.js"></script>
+
+  </body>
+
+</html><!DOCTYPE html>
+
+<html>
   
   <head>
     <title>RP Calculator</title>
