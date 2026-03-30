@@ -1,0 +1,10 @@
+body {
+    font-family: Arial;
+    margin: 40px;
+}
+
+.station {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin: 10px 0;
+}
