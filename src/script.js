@@ -40,6 +40,17 @@ function renderStations() {
             recalcAll();
         });
 
+        /* COUNT */
+
+        const countInput = document.createElement("input");
+        countInput.type = "number";
+        countInput.value = s.count;
+            
+        countInput.addEventListener("input", () => {
+            s.count = Number(countInput.value);
+            recalcAll();
+        });
+
         /* ITEMS */
         
         const itemsContainer = stationEl.querySelector(".items");
@@ -75,6 +86,31 @@ function renderStations() {
             itemsContainer.appendChild(itemLabel);
         });
 
+
+
+        // item 1 for everything except tier 1
+        if (s.tier !== "1") {
+            createItemSelect(container, s, 0);
+        }
+        
+        // item 2 only for tier 3 and 4
+        if (s.tier === "3" || s.tier === "4") {
+            createItemSelect(container, s, 1);
+        }
+        
+        // circuit delay only for tier 4
+        if (s.tier === "4") {
+            const input = document.createElement("input");
+            input.type = "number";
+            input.value = s.circuitDelay || 0;
+        
+            input.addEventListener("input", () => {
+                s.circuitDelay = Number(input.value);
+                recalcAll();
+            });
+        
+            container.appendChild(input);
+        }
 
         
         const circuitLabel = stationEl.querySelector(".circuit");
