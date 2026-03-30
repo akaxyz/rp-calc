@@ -3,6 +3,11 @@
 let nextStationId = 0;
 let stations = [];
 
+document.addEventListener("DOMContentLoaded", () => {
+    renderStations();
+    recalcAll();
+});
+
 function addStation() {
     stations.push({
         id: nextStationId++,
@@ -14,7 +19,6 @@ function addStation() {
 
     renderStations();
     recalcAll();
-    renderResults();
 }
 
 function adjustItemsForTier(s) {
