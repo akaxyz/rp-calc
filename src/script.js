@@ -6,10 +6,10 @@ let stations = [];
 function addStation() {
     stations.push({
         id: nextStationId++,
-        tier: "1",
+        tier: "4",
         count: 1,
         items: [],
-        circuitDelay: 0
+        circuitDelay: 4
     });
 
     renderStations();
