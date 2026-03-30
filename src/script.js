@@ -86,21 +86,49 @@ function renderStations() {
         itemsContainer.innerHTML = "";
 
         s.items.forEach((itemValue, idx) => {
-            const dropdown = document.createElement("div");
-            dropdown.className = "itemDropdown";
+            const opt = document.createElement("div");
+            opt.className = "option";
             
-            const label = document.createElement("label");
-            label.textContent = "Item " + (idx + 1);
-            dropdown.appendChild(label);
-
-            const selectedDiv = document.createElement("div");
-            selectedDiv.className = "selected";
-            dropdown.appendChild(selectedDiv);
-
-            const optionsDiv = document.createElement("div");
-            optionsDiv.className = "options";
-            dropdown.appendChild(optionsDiv);
-
+            const left = document.createElement("div");
+            left.className = "optionLeft";
+            
+            const img = document.createElement("img");
+            img.src = data.icon;
+            img.className = "icon";
+            
+            const name = document.createElement("span");
+            name.textContent = name;
+            
+            left.appendChild(img);
+            left.appendChild(name);
+            
+            const right = document.createElement("div");
+            right.className = "optionRight";
+            
+            const rp = document.createElement("span");
+            rp.className = "rp";
+            rp.textContent = data.rp;
+            
+            const money = document.createElement("span");
+            money.className = "money";
+            money.textContent = "$" + data.money;
+            
+            right.appendChild(rp);
+            right.appendChild(money);
+            
+            opt.appendChild(left);
+            opt.appendChild(right);
+            
+            const noneOpt = document.createElement("div");
+            noneOpt.className = "option";
+            noneOpt.textContent = "(None)";
+            noneOpt.onclick = () => {
+                s.items[idx] = null;
+                renderStations();
+                recalcAll();
+            };
+            optionsDiv.appendChild(noneOpt);
+            
             // populate options
             Object.entries(items)
                 .sort((a, b) => a[1].rp - b[1].rp)
@@ -131,10 +159,10 @@ function renderStations() {
             if (itemValue && items[itemValue]) {
                 selectedDiv.innerHTML = `
                     <img src="${items[itemValue].icon}" class="icon">
-                    ${itemValue} (RP:${items[itemValue].rp} $${items[itemValue].money})
+                    ${itemValue}
                 `;
             } else {
-                selectedDiv.textContent = "Select item";
+                selectedDiv.textContent = "(None)";
             }
 
             selectedDiv.onclick = (e) => {
