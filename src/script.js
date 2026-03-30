@@ -33,14 +33,24 @@ function renderStations() {
     const container = document.getElementById("stations");
     container.innerHTML = "";
 
+    // single document click listener for closing dropdowns
+    document.onclick = (e) => {
+        document.querySelectorAll(".options").forEach(opt => {
+            if (!opt.parentElement.contains(e.target)) {
+                opt.classList.remove("show");
+            }
+        });
+    };
+
     stations.forEach((s) => {
         adjustItemsForTier(s);
 
         const template = document.getElementById("station-template");
         const stationEl = template.content.cloneNode(true);
 
-        /* TIER */
+        // TIER
         const tierSelect = stationEl.querySelector(".tier");
+        tierSelect.innerHTML = "";
         ["1","2","3","4","SDC"].forEach(t => {
             const opt = document.createElement("option");
             opt.value = t;
@@ -48,118 +58,111 @@ function renderStations() {
             if (t === s.tier) opt.selected = true;
             tierSelect.appendChild(opt);
         });
-
-        tierSelect.addEventListener("change", () => {
+        tierSelect.onchange = () => {
             s.tier = tierSelect.value;
             renderStations();
             recalcAll();
-        });
+        };
 
-        /* COUNT */
+        // COUNT
         const countInput = stationEl.querySelector(".count");
         countInput.value = s.count;
-
-        countInput.addEventListener("input", () => {
+        countInput.oninput = () => {
             s.count = Number(countInput.value);
             recalcAll();
-        });
+        };
 
-        /* ITEMS */
+        // ITEMS
         const itemsContainer = stationEl.querySelector(".items");
         itemsContainer.innerHTML = "";
-        
+
         s.items.forEach((itemValue, idx) => {
-        
             const label = document.createElement("div");
             label.textContent = "Item " + (idx + 1);
             itemsContainer.appendChild(label);
-        
+
             const dropdown = document.createElement("div");
             dropdown.className = "itemDropdown";
-            
-            const selected = document.createElement("div");
-            selected.className = "selected";
-            dropdown.appendChild(selected);
-            
-            const options = document.createElement("div");
-            options.className = "options";
-            dropdown.appendChild(options);
-        
+
+            const selectedDiv = document.createElement("div");
+            selectedDiv.className = "selected";
+            dropdown.appendChild(selectedDiv);
+
+            const optionsDiv = document.createElement("div");
+            optionsDiv.className = "options";
+            dropdown.appendChild(optionsDiv);
+
+            // populate options
             Object.entries(items)
                 .sort((a, b) => a[1].rp - b[1].rp)
                 .forEach(([name, data]) => {
                     const opt = document.createElement("div");
                     opt.className = "option";
-                
+
                     const img = document.createElement("img");
                     img.src = data.icon;
                     img.className = "icon";
-                
+
                     const text = document.createElement("span");
                     text.textContent = `${name} (RP:${data.rp} $${data.money})`;
-                
+
                     opt.appendChild(img);
                     opt.appendChild(text);
-                
-                    opt.addEventListener("click", () => {
+
+                    opt.onclick = () => {
                         s.items[idx] = name;
                         renderStations();
                         recalcAll();
-                    });
-                
-                    options.appendChild(opt);
+                    };
+
+                    optionsDiv.appendChild(opt);
                 });
-        
+
+            // show selected
             if (itemValue && items[itemValue]) {
-                selected.innerHTML = `
+                selectedDiv.innerHTML = `
                     <img src="${items[itemValue].icon}" class="icon">
                     ${itemValue} (RP:${items[itemValue].rp} $${items[itemValue].money})
                 `;
             } else {
-                selected.textContent = "Select item";
+                selectedDiv.textContent = "Select item";
             }
-        
-            selected.addEventListener("click", () => {
-                options.classList.toggle("show");
-            });
-        
+
+            selectedDiv.onclick = (e) => {
+                e.stopPropagation(); // prevent document click from closing immediately
+                optionsDiv.classList.toggle("show");
+            };
+
             itemsContainer.appendChild(dropdown);
         });
 
-        document.addEventListener("click", (e) => {
-            document.querySelectorAll(".options").forEach(opt => {
-                if (!opt.parentElement.contains(e.target)) {
-                    opt.classList.remove("show");
-                }
-            });
-        });
-                        
-        /* CIRCUIT */
+        // CIRCUIT
         const circuitDiv = stationEl.querySelector(".circuit");
         const circuitInput = stationEl.querySelector(".circuitDelay");
 
         if (s.tier === "4") {
             circuitDiv.style.display = "block";
             circuitInput.value = s.circuitDelay;
-
-            circuitInput.addEventListener("input", () => {
+            circuitInput.oninput = () => {
                 s.circuitDelay = Number(circuitInput.value);
                 recalcAll();
-            });
+            };
         } else {
             circuitDiv.style.display = "none";
         }
 
-        /* REMOVE BUTTON */
+        // REMOVE BUTTON
         const removeBtn = stationEl.querySelector(".remove");
-        removeBtn.addEventListener("click", () => {
+        removeBtn.onclick = () => {
             stations = stations.filter(st => st.id !== s.id);
             renderStations();
             recalcAll();
-        });
+        };
 
         container.appendChild(stationEl);
     });
+
+    renderResults();
 }
 
 function recalcAll() {
@@ -172,4 +175,17 @@ function recalcAll() {
 
     document.getElementById("totals").innerText =
         "Stations: " + total;
+}
+
+function renderResults() {
+    const data = computeAllTiers();
+    const container = document.getElementById("tierResults");
+    container.innerHTML = "";
+
+    for (let tier in data) {
+        const { rps, cap } = data[tier];
+        const el = document.createElement("div");
+        el.textContent = `Tier ${tier}: RP/s = ${rps.toFixed(2)}, Cap = ${cap.toFixed(2)}`;
+        container.appendChild(el);
+    }
 }
