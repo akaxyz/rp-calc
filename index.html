@@ -16,12 +16,21 @@
     
     <template id="station-template">
       <div class="station">
-        <label>Tier: <select class="tier"></select></label>
+        Tier:
+        <select class="tier"></select>
+    
+        Count:
+        <input class="count" type="number" min="1" value="1">
+    
         <div class="items"></div>
-        <label class="circuit" style="display:none;">Circuit: <input type="checkbox"></label>
+    
+        <div class="circuit">
+          Circuit Delay:
+          <input class="circuitDelay" type="number" min="0">
+        </div>
       </div>
     </template>
-    
+        
     <button onclick="addStation()">Add Research Station</button>
 
     <div id="stations"></div>
