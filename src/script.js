@@ -166,15 +166,61 @@ function renderStations() {
 }
 
 function recalcAll() {
-    // placeholder
-    let total = 0;
+    // aggregate stations by tier
+    const tierData = {
+        "1": [],
+        "2": [],
+        "3": [],
+        "4": [],
+        "SDC": []
+    };
 
     stations.forEach(s => {
-        total += s.count;
+        tierData[s.tier].push(s);
     });
 
-    document.getElementById("totals").innerText =
-        "Stations: " + total;
+    // compute sums and apply formulas
+    const results = {};
+    for (let tier in tierData) {
+        const tierStations = tierData[tier];
+        let rpSum = 0;
+        let capFactorSum = 0;
+
+        tierStations.forEach(s => {
+            const itemRPSum = getStationItemRPSum(s);
+            const capFactor = getStationCapFactor(s);
+
+            rpSum += s.count * itemRPSum;
+            capFactorSum += s.count * capFactor;
+        });
+
+        if (stationFormula[tier]) {
+            const { rps, cap } = stationFormula[tier]([rpSum, capFactorSum]);
+            results[tier] = { rps, cap };
+        } else {
+            results[tier] = { rps: 0, cap: 0 };
+        }
+    }
+
+    // display totals
+    const container = document.getElementById("tierResults");
+    container.innerHTML = "";
+
+    let totalRPS = 0;
+    for (let tier in results) {
+        const { rps, cap } = results[tier];
+        totalRPS += rps;
+
+        const el = document.createElement("div");
+        el.textContent = `Tier ${tier}: RP/s = ${rps.toFixed(2)}, Cap = ${cap.toFixed(2)}`;
+        container.appendChild(el);
+    }
+
+    // optional: show total RP/s
+    const totalEl = document.getElementById("totals");
+    if (totalEl) {
+        totalEl.textContent = "Total RP/s: " + totalRPS.toFixed(2);
+    }
 }
 
 function renderResults() {
