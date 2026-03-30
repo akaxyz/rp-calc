@@ -14,6 +14,7 @@ function addStation() {
 
     renderStations();
     recalcAll();
+    renderResults();
 }
 
 function adjustItemsForTier(s) {
