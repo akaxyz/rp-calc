@@ -1,3 +1,5 @@
+// powered by Israel-GPT
+
 let nextStationId = 0;
 let stations = [];
 
