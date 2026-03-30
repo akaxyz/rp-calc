@@ -8,7 +8,7 @@
     display: flex;
     align-items: center;
     gap: 12px;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
 }
 
 .station > * {
@@ -22,19 +22,12 @@
 }
 
 .itemDropdown {
+    position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
     font-size: 11px;
-    position: relative;
     width: 280px;
-}
-
-.itemDropdown {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
 }
 
 .selected {
@@ -47,12 +40,15 @@
 }
 
 .options {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    padding: 2px 6px;
-    font-size: 12px;
-    white-space: nowrap;
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: #222;
+    border: 1px solid #888;
+    max-height: 220px;
+    overflow-y: auto;
+    z-index: 100;
     width: 100%;
     box-sizing: border-box;
 }
