@@ -14,14 +14,8 @@
 
 .station {
     border: 1px solid #444;
-    padding: 6px;
+    padding: 12px 6px 6px 6px; /* extra top padding for labels */
     margin-bottom: 6px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.station {
     display: flex;
     align-items: center;
     gap: 10px;
@@ -39,18 +33,26 @@
 
 .itemDropdown label {
     position: absolute;
-    top: -12px;
-    left: 4px;
+    top: -10px;
+    left: 6px;
     font-size: 10px;
     color: #888;
+    background: #111;
+    padding: 0 2px;
 }
 
 input,
 select,
 .selected {
-    height: 26px;
+    border: 1px solid #888;
+    padding: 2px 6px;
+    background: #222;
+    cursor: pointer;
+    width: 100%;
     box-sizing: border-box;
-    font-size: 13px;
+
+    display: flex;
+    align-items: center;
 }
 
 .options {
@@ -73,12 +75,29 @@ select,
 
 .option {
     display: flex;
+    justify-content: space-between;
     align-items: center;
-    gap: 6px;
     padding: 2px 6px;
     font-size: 12px;
-    white-space: nowrap;
-    justify-content: space-between;
+}
+
+.optionLeft {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.optionRight {
+    display: flex;
+    gap: 10px;
+}
+
+.rp {
+    color: #4da6ff;
+}
+
+.money {
+    color: #66cc66;
 }
 
 .option:hover {
