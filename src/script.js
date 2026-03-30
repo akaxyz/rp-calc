@@ -65,51 +65,59 @@ function renderStations() {
         });
 
         /* ITEMS */
-        const dropdown = document.createElement("div");
-        dropdown.className = "itemDropdown";
+        const itemsContainer = stationEl.querySelector(".items");
+        itemsContainer.innerHTML = "";
         
-        const selected = document.createElement("div");
-        selected.className = "selected";
-        dropdown.appendChild(selected);
+        s.items.forEach((itemValue, idx) => {
         
-        const options = document.createElement("div");
-        options.className = "options";
-        dropdown.appendChild(options);
-
-        Object.entries(items).forEach(([name, data]) => {
-            const opt = document.createElement("div");
-            opt.className = "option";
+            const dropdown = document.createElement("div");
+            dropdown.className = "itemDropdown";
+            
+            const selected = document.createElement("div");
+            selected.className = "selected";
+            dropdown.appendChild(selected);
+            
+            const options = document.createElement("div");
+            options.className = "options";
+            dropdown.appendChild(options);
         
-            const img = document.createElement("img");
-            img.src = data.icon;
-            img.className = "icon";
-        
-            const text = document.createElement("span");
-            text.textContent = `${name} (RP:${data.rp} $${data.money})`;
-        
-            opt.appendChild(img);
-            opt.appendChild(text);
-        
-            opt.addEventListener("click", () => {
-                s.items[idx] = name;
-                renderStations();
-                recalcAll();
+            Object.entries(items).forEach(([name, data]) => {
+                const opt = document.createElement("div");
+                opt.className = "option";
+            
+                const img = document.createElement("img");
+                img.src = data.icon;
+                img.className = "icon";
+            
+                const text = document.createElement("span");
+                text.textContent = `${name} (RP:${data.rp} $${data.money})`;
+            
+                opt.appendChild(img);
+                opt.appendChild(text);
+            
+                opt.addEventListener("click", () => {
+                    s.items[idx] = name;
+                    renderStations();
+                    recalcAll();
+                });
+            
+                options.appendChild(opt);
             });
         
-            options.appendChild(opt);
-        });
-
-        if (itemValue && items[itemValue]) {
-            selected.innerHTML = `
-                <img src="${items[itemValue].icon}" class="icon">
-                ${itemValue} (RP:${items[itemValue].rp} $${items[itemValue].money})
-            `;
-        } else {
-            selected.textContent = "Select item";
-        }
-
-        selected.addEventListener("click", () => {
-            options.classList.toggle("show");
+            if (itemValue && items[itemValue]) {
+                selected.innerHTML = `
+                    <img src="${items[itemValue].icon}" class="icon">
+                    ${itemValue} (RP:${items[itemValue].rp} $${items[itemValue].money})
+                `;
+            } else {
+                selected.textContent = "Select item";
+            }
+        
+            selected.addEventListener("click", () => {
+                options.classList.toggle("show");
+            });
+        
+            itemsContainer.appendChild(dropdown);
         });
                 
         /* CIRCUIT */
