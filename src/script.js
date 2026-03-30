@@ -221,6 +221,17 @@ function recalcAll() {
     if (totalEl) {
         totalEl.textContent = "Total RP/s: " + totalRPS.toFixed(2);
     }
+
+        const currentRP = Number(document.getElementById("currentRP").value) || 0;
+    const targetRP = Number(document.getElementById("targetRP").value) || 0;
+    
+    const timeDiv = document.getElementById("timeToTarget");
+    if(totalRPS > 0) {
+        const timeSeconds = Math.max(0, (targetRP - currentRP) / totalRPS);
+        timeDiv.textContent = "Time to reach target: " + timeSeconds.toFixed(2) + "s";
+    } else {
+        timeDiv.textContent = "Time to reach target: ∞";
+    }
 }
 
 function renderResults() {
