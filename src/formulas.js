@@ -1,6 +1,6 @@
 
 function log(n,b) {
-  let result = (math.log(n) / math.log(b))
+  let result = (Math.log(n) / Math.log(b))
   return result == -Infinity ? 0 : result;
 };
 
@@ -61,7 +61,7 @@ function getStationCapFactor(s) {
   if (s.tier === "1" || s.tier === "2") return s.count;
 
   const moneyValues = s.items.map(getItemMoney);
-  const avg = math.max(0, moneyValues.reduce((a,b) => a+b, 0)) / moneyValues.length / 600;
+  const avg = Math.max(0, moneyValues.reduce((a,b) => a+b, 0)) / moneyValues.length / 600;
   let f = 0;
   
   if (s.tier == "3" || s.tier == "4") {
