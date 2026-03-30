@@ -66,6 +66,7 @@
           <input id="targetRP" type="number" value="1000" min="0">
         </div>
         <div id="timeToTarget">Time to reach target: 0s</div>
+        <div id="satDishInfo" style="margin-top:6px; font-family:'Share Tech Mono',monospace; font-size:11px; color:#556677;"></div>
       </div>
       <div class="panel-box">
         <div class="panel-box-title">Tier Breakdown</div>
@@ -73,70 +74,21 @@
           <span></span>
           <span>RP/s</span>
           <span>Cap</span>
-          <span>Bonus</span>
         </div>
         <div id="tierResults"></div>
-        <div id="totals"></div>
-      </div>
-    </div>
-
-    <script src="src/items.js"></script>
-    <script src="src/formulas.js"></script>
-    <script src="src/script.js"></script>
-
-  </body>
-
-</html><!DOCTYPE html>
-
-<html>
-  
-  <head>
-    <title>RP Calculator</title>
-
-    <link rel="stylesheet" href="src/style.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
-    <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
-  </head>
-  
-  <body>
-
-    <h1>calculatenator</h1>
-    
-    <template id="station-template">
-      <div class="station">
-        <button class="remove">x</button>
-        <input class="count" type="number" min="1">
-        <select class="tier"></select>
-        <div class="items"></div>
-        <div class="circuit">
-          Circuit Delay:
-          <input class="circuitDelay" type="number" min="0">
+        <div class="totals-grid">
+          <span class="total-label">TOTAL RP/S</span>
+          <span class="total-value" id="totalRPS">0.00</span>
+          <span class="total-label">TOTAL POWER</span>
+          <span class="total-value" id="totalPower">0 MF/s</span>
         </div>
       </div>
-    </template>
-    
-    <div class="controls">
-      <button onclick="addStation()" id="addStationBtn">Add Research Station</button>
-      <button onclick="sortDropdowns()">Sort Items</button>
     </div>
-    
-    <div id="stationContainer">
-        <div id="stations"></div>
-    </div>
-    
-    <div id="rpInputs">
-        Current RP: <input id="currentRP" type="number" value="0" min="0">
-        Target RP: <input id="targetRP" type="number" value="1000" min="0">
-        <div id="timeToTarget">Time to reach target: 0s</div>
-    </div>
-    
-    <div id="totals"></div>
-    <div id="tierResults"></div>
 
     <script src="src/items.js"></script>
     <script src="src/formulas.js"></script>
     <script src="src/script.js"></script>
 
   </body>
-  
+
 </html>
