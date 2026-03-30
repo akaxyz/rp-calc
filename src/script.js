@@ -1,10 +1,17 @@
+let nextStationId = 0;
 let stations = [];
 
 function addStation() {
     stations.push({
-        tier: 1,
-        count: 1
+        id: nextStationId++,
+        tier: "1",
+        count: 1,
+        items: [],
+        circuitDelay: 4,
+        cap: 0,
+        rps: 0
     });
+
     renderStations();
 }
 
@@ -13,21 +20,28 @@ function renderStations() {
     div.innerHTML = "";
 
     stations.forEach((s, i) => {
-        div.innerHTML += `
-        <div class="station">
-            Tier:
-            <select onchange="stations[${i}].tier=this.value; recalc()">
-                <option>1</option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option>
-            </select>
-
-            Count:
-            <input type="number" value="${s.count}"
-            onchange="stations[${i}].count=this.value; recalc()">
-        </div>
-        `;
+        let html = `<div class="station">`;
+        html += `Tier:
+        <select onchange="stations[${i}].tier=this.value; renderStations(); recalcAll();">
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+        </select>`;
+    
+        if (s.tier >= 2) {
+            html += `Item 1: <select>...</select>`;
+        }
+    
+        if (s.tier >= 3) {
+            html += `Item 2: <select>...</select>`;
+        }
+    
+        if (s.tier == 4) {
+            html += `Circuit: <input type="checkbox">`;
+        }
+    
+        html += `</div>`;
     });
 
     recalc();
