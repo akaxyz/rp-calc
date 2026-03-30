@@ -23,21 +23,22 @@ function renderStations() {
         let html = `<div class="station">`;
         html += `Tier:
         <select onchange="stations[${i}].tier=this.value; renderStations(); recalcAll();">
-            <option>1</option>
-            <option>2</option>
-            <option>3</option>
-            <option>4</option>
+            <option>"1"</option>
+            <option>"2"</option>
+            <option>"3"</option>
+            <option>"4"</option>
+            <option>"SDC"</option>
         </select>`;
     
-        if (s.tier >= 2) {
+        if (s.tier != "1") {
             html += `Item 1: <select>...</select>`;
         }
     
-        if (s.tier >= 3) {
+        if (s.tier == "3" || s.tier == "4") {
             html += `Item 2: <select>...</select>`;
         }
     
-        if (s.tier == 4) {
+        if (s.tier == "4") {
             html += `Circuit: <input type="checkbox">`;
         }
     
